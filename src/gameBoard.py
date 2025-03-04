@@ -20,10 +20,16 @@ class Board:
 
     def placeTraps(self, dx: int, dy: int) -> None:
         """Platziert Fallen zufällig auf dem Spielfeld"""
+        possiblePositions = []
+        totalCells = self._size ** 2
+        numTraps = round(totalCells * 0.3)
         for x in range(self._size):
             for y in range(self._size):
-                self._grid[x][y] = Cell(random.choices([True, False], [0.3, 0.7])[0])
-        self._grid[dx][dy] = Cell()
+                if(x, y) != (dx, dy):
+                    possiblePositions.append((x, y))
+        trapPositions = random.sample(possiblePositions, numTraps)
+        for x, y in trapPositions:
+            self._grid[x][y] = Cell(True)
         self._calculateAdjacentTraps()
 
     def _calculateAdjacentTraps(self) -> None:
@@ -34,7 +40,7 @@ class Board:
                     trapCount = self._countTraps(x, y)
                     self._grid[x][y].setAdjacentTraps(trapCount)
 
-    def _countTraps(self, x, y) -> int:
+    def _countTraps(self, x: int, y: int) -> int:
         """Zählt die Fallen um die Zelle"""
         count = 0
         for i in range(-1, 2):
@@ -46,40 +52,47 @@ class Board:
                     count += 1
         return count
 
-    def revealArea(self, x: int, y: int) -> None:
+    def scanArea(self, x: int, y: int) -> None:
         """Aufdecken leerer Felder"""
         if not (0 <= x < self._size and 0 <= y < self._size):
             return
-        if self._grid[x][y].isRevealed():
+        if self._grid[x][y].isScanned():
             return
 
-        self._grid[x][y].reveal()
+        self._grid[x][y].scan()
 
         if self._grid[x][y].getAdjacentTraps() == 0:
             for i in range(-1, 2):
                 for j in range(-1, 2):
                     nx, ny = x + i, y + j
                     if 0 <= nx < self._size and 0 <= ny < self._size:
-                        self.revealArea(nx, ny)
+                        self.scanArea(nx, ny)
 
     def displayBoard(self) -> None:
         """Zeigt das Spielfeld"""
-        for row in self._grid:
-            for cell in row:
-                if cell.isRevealed():
+        print("   ", end="")
+        for y in range(self._size):
+            print(f"{y+1:2}", end=" ")
+        print("\n  " + "—" * (self._size * 3))
+
+        for row in range(self._size):
+            print(f"{row+1:2}|", end=" ")
+
+            for cell in self._grid[row]:
+                if cell.isScanned():
                     if cell.isTrap():
-                        print("*", end=" ")
+                        print("*", end="  ")
                     else:
                         count = cell.getAdjacentTraps()
-                        print(count if count > 0 else " ", end=" ")
+                        print(count if count > 0 else " ", end="  ")
                 else:
-                    print("■", end=" ")
+                    print("■", end="  ")
             print()
 
-    def revealTraps(self) -> None:
+    def scanTraps(self) -> None:
         """Deckt alle Fallen auf"""
         for row in self._grid:
             for cell in row:
                 if cell.isTrap():
-                    cell.reveal()
+                    cell.scan()
         self.displayBoard()

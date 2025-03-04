@@ -7,5 +7,5 @@ class OutOfRangeError(Exception):
         self._min = minValue
         self._max = maxValue
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self._value} is out of the Possible Range ({self._min+1}-{self._max+1})"
