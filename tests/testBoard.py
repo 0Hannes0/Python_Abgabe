@@ -4,11 +4,8 @@ Tests für die Klasse Board
 
 import unittest
 from unittest.mock import patch
-import sys
-import os
 from src.gameBoard import Board
 from src.cell import Cell
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
 class TestBoard(unittest.TestCase):
     """Tests für die Klasse Board"""

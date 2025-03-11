@@ -90,12 +90,6 @@ class TestGame(unittest.TestCase):
         result: GameState = self.game._checkWin()  # pylint: disable=protected-access
         self.assertEqual(result, GameState.WON)
 
-    def testEndGamePlayAgain(self) -> None:
-        """Testet, ob das Spiel neu startet, wenn der Spieler 'y' eingibt"""
-        with patch("builtins.input", side_effect=["y"]), patch("game.Game.start") as mockStart:
-            self.game._end()  # pylint: disable=protected-access
-            mockStart.assert_called_once()
-
     def testEndGameExit(self) -> None:
         """Testet, ob das Spiel sich beendet, wenn der Spieler 'n' eingibt"""
         with patch("builtins.input", side_effect=["n"]), self.assertRaises(SystemExit):

@@ -3,10 +3,7 @@ Testmodul für die Fehler
 """
 
 import unittest
-import sys
-import os
 from src.errors import OutOfRangeError
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
 class TestErrors(unittest.TestCase):
     """Testklasse für Fehler."""

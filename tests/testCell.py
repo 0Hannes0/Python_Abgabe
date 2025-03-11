@@ -3,10 +3,7 @@ Testmodule für die Klasse Cell.
 """
 
 import unittest
-import sys
-import os
 from src.cell import Cell
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
 class TestCell(unittest.TestCase):
     """Test für die Klasse Cell."""
