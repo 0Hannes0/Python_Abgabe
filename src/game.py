@@ -2,8 +2,8 @@
 
 from enum import Enum
 import sys
-from gameBoard import Board
-import errors
+from src.gameBoard import Board
+import src.errors
 
 # pylint: disable=too-few-public-methods
 class GameState(Enum):
@@ -58,11 +58,11 @@ class Game:
             try:
                 self._size = int(input("Please enter the size of the game table: "))
                 if self._size < self.minSize or self._size > self.maxSize:
-                    raise errors.OutOfRangeError(self._size, self.minSize-1, self.maxSize-1)
+                    raise src.errors.OutOfRangeError(self._size, self.minSize-1, self.maxSize-1)
                 break
             except ValueError:
                 print("Please enter a valid number.")
-            except errors.OutOfRangeError as e:
+            except src.errors.OutOfRangeError as e:
                 print(e)
 
         self._gameBoard = Board(self._size)
@@ -73,10 +73,10 @@ class Game:
             try:
                 x = int(input("Please enter line of the row: "))
                 if not 1 <= x <= self._size:
-                    raise errors.OutOfRangeError(x, 0, self._size - 1)
+                    raise src.errors.OutOfRangeError(x, 0, self._size - 1)
                 y = int(input("Please enter line of the column: "))
                 if not 1 <= y <= self._size:
-                    raise errors.OutOfRangeError(y, 0, self._size - 1)
+                    raise src.errors.OutOfRangeError(y, 0, self._size - 1)
 
                 if self._moves == 0:
                     self._getGameBoard().placeTraps(x-1, y-1)
@@ -96,7 +96,7 @@ class Game:
 
             except ValueError:
                 print("Please enter a valid number.")
-            except errors.OutOfRangeError as e:
+            except src.errors.OutOfRangeError as e:
                 print(e)
         self._end()
 

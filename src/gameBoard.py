@@ -1,7 +1,7 @@
 """Spielfeld von Verlassene Raumstation"""
 
 import random
-from cell import Cell
+from src.cell import Cell
 
 class Board:
     """Spielfeld von Verlassene Raumstation"""
