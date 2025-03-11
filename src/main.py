@@ -1,6 +1,6 @@
 """Startet das Spiel"""
 
-from game import Game
+from src.game import Game
 
 def main() -> None:
     """Startet das Spiel"""
