@@ -22,7 +22,7 @@ class Board:
         """Platziert Fallen zufällig auf dem Spielfeld"""
         possiblePositions = []
         totalCells = self._size ** 2
-        numTraps = round(totalCells * 0.3)
+        numTraps = round(totalCells * 0.156)
         for x in range(self._size):
             for y in range(self._size):
                 if(x, y) != (dx, dy):

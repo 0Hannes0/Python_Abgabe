@@ -92,7 +92,7 @@ class Game:
                     break
 
                 if state == GameState.REPEAT:
-                    print("This cell is already scaned.")
+                    print("This cell is already scanned.")
 
             except ValueError:
                 print("Please enter a valid number.")
