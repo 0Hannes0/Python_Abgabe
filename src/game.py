@@ -120,8 +120,3 @@ class Game:
                 if not cell.isTrap() and not cell.isScanned():
                     return GameState.PLAYING
         return GameState.WON
-
-
-if __name__ == "__main__":
-    game = Game()
-    game.start()
