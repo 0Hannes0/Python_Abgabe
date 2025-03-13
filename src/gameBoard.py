@@ -11,11 +11,11 @@ class Board:
         self._grid: list[list[Cell]] = [[Cell() for _ in range(size)] for _ in range(size)]
 
     def getCell(self, x: int, y: int) -> Cell:
-        """Gibt die Zelle an den Koordinaten zurück"""
+        """Gibt Zelle an Koordinaten zurück"""
         return self._grid[x][y]
 
     def getSize(self) -> int:
-        """Gibt die Größe des Spielfelds zurück"""
+        """Gibt Größe des Spielfelds zurück"""
         return self._size
 
     def placeTraps(self, dx: int, dy: int) -> None:
@@ -33,7 +33,7 @@ class Board:
         self._calculateAdjacentTraps()
 
     def _calculateAdjacentTraps(self) -> None:
-        """Berechnet Anzahl der benachbarten Fallen"""
+        """Berechnet Anzahl benachbarter Fallen"""
         for x in range(self._size):
             for y in range(self._size):
                 if not self._grid[x][y].isTrap():
@@ -41,7 +41,7 @@ class Board:
                     self._grid[x][y].setAdjacentTraps(trapCount)
 
     def _countTraps(self, x: int, y: int) -> int:
-        """Zählt die Fallen um die Zelle"""
+        """Zählt Fallen um Zelle"""
         count = 0
         for i in range(-1, 2):
             for j in range(-1, 2):
@@ -69,7 +69,7 @@ class Board:
                         self.scanArea(nx, ny)
 
     def displayBoard(self) -> None:
-        """Zeigt das Spielfeld"""
+        """Anzeigen von Spielfeld"""
         print("   ", end="")
         for y in range(self._size):
             print(f"{y+1:2}", end=" ")

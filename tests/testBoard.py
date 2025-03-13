@@ -10,26 +10,26 @@ from src.cell import Cell
 class TestBoard(unittest.TestCase):
     """Tests für die Klasse Board"""
     def setUp(self) -> None:
-        """Setzt ein Standard-Spielfeld für Tests auf."""
+        """Setzt Standard-Spielfeld für Tests auf"""
         self.board = Board(5)
 
     def testBoardSize(self) -> None:
-        """Testet, ob die Größe korrekt gespeichert wird."""
+        """Testet, ob Größe korrekt gespeichert wird"""
         self.assertEqual(self.board.getSize(), 5)
 
     def testGetCell(self) -> None:
-        """Testet, ob eine Zelle korrekt abgerufen wird."""
+        """Testet, ob Zelle korrekt abgerufen wird"""
         cell = self.board.getCell(2, 2)
         self.assertIsInstance(cell, Cell)
 
     def testPlaceTraps(self) -> None:
-        """Testet, ob Fallen gesetzt werden."""
+        """Testet, ob Fallen gesetzt werden"""
         self.board.placeTraps(0, 0)
         trapCount = sum(1 for x in range(5) for y in range(5) if self.board.getCell(x, y).isTrap())
         self.assertGreater(trapCount, 0)
 
     def testScanTraps(self) -> None:
-        """Testet, ob scanTraps() alle Fallen aufdeckt und displayBoard() aufruft."""
+        """Testet, ob scanTraps() alle Fallen aufdeckt und displayBoard() aufruft"""
         cell = self.board.getCell(1, 1)
         with patch.object(cell, "isTrap", return_value=True):
             with patch.object(cell, "scan") as mockScan:
@@ -39,7 +39,7 @@ class TestBoard(unittest.TestCase):
                     mockDisplay.assert_called_once()
 
     def testScanArea(self) -> None:
-        """Testet, ob scanArea rekursiv leere Felder aufdeckt."""
+        """Testet, ob scanArea leere Felder aufdeckt"""
         self.board.getCell(2, 2).setAdjacentTraps(0)
 
         for i in range(-1, 2):

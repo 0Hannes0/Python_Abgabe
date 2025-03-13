@@ -28,15 +28,15 @@ class Game:
         assert self._gameBoard is not None, "GameBoard is not initialized"
         return self._gameBoard
 
-
     def start(self) -> None:
-        """Startet Spiel und verwaltet Benutzereingaben"""
+        """Startet Spiel"""
         print("-----------------Welcome-----------------")
         self._initializeGameBoard()
         self._getGameBoard().displayBoard()
         self._gameLoop()
 
     def _end(self) -> None:
+        """Beendet Spiel"""
         print("-----------------------------------------")
         while True:
             again = input("Do you want to play again? (y/n): ").strip().lower()
@@ -101,7 +101,7 @@ class Game:
         self._end()
 
     def _handleMove(self, x: int, y: int) -> GameState:
-        """Verarbeitet den Spielzug"""
+        """Verarbeitet Spielzug"""
         cell = self._getGameBoard().getCell(x-1, y-1)
         if cell.isScanned():
             return GameState.REPEAT
