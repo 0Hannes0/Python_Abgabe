@@ -1,16 +1,12 @@
-"""
-Testet die Funktionalität des Spiels
-"""
+#pylint: disable=C
 
 import unittest
 from unittest.mock import patch, MagicMock
 from src.game import Game, GameState
 
 class TestGame(unittest.TestCase):
-    """Testet Funktionalität des Spiels"""
 
     def setUp(self) -> None:
-        """Setzt Spiel mit Mock-Spielfeld auf"""
         self.game = Game()
         self.game._size = 5  # pylint: disable=protected-access
         self.game._moves = 0  # pylint: disable=protected-access
@@ -29,7 +25,6 @@ class TestGame(unittest.TestCase):
         self.mockBoard.getCell.side_effect = getCellMock
 
     def testGameStart(self) -> None:
-        """Testet, ob Spiel korrekt gestartet wird"""
         with patch.object(self.game, "_initializeGameBoard") as mockInit, \
              patch.object(self.game, "_getGameBoard") as mockGetBoard, \
              patch.object(self.game, "_gameLoop") as mockGameLoop:
@@ -45,38 +40,32 @@ class TestGame(unittest.TestCase):
             mockGameLoop.assert_called_once()
 
     def testInitializeGameBoardValid(self) -> None:
-        """Testet, ob gültiges Spielfeld initialisiert wird"""
         with patch("builtins.input", return_value="7"):
             self.game._initializeGameBoard()  # pylint: disable=protected-access
             self.assertEqual(self.game._size, 7)  # pylint: disable=protected-access
             self.assertIsNotNone(self.game._gameBoard)  # pylint: disable=protected-access
 
     def testInitializeGameBoardInvalid(self) -> None:
-        """Testet falsche Eingabe für die Spielfeldgröße"""
         with patch("builtins.input", side_effect=["2", "16", "8"]):
             self.game._initializeGameBoard()  # pylint: disable=protected-access
             self.assertEqual(self.game._size, 8)  # pylint: disable=protected-access
 
     def testHandleMoveHitTrap(self) -> None:
-        """Testet, ob Spiel endet, wenn Mine getroffen wird"""
         x, y = 2, 2
         result = self.game._handleMove(x, y)  # pylint: disable=protected-access
         self.assertEqual(result, GameState.LOST, f"Erwartet: {GameState.LOST}, Erhalten: {result}")
 
     def testHandleMoveSafeCell(self) -> None:
-        """Testet, ob Spiel weitergeht, wenn sicheres Feld gewählt wird"""
         result: GameState = self.game._handleMove(1, 1)  # pylint: disable=protected-access
         self.assertEqual(result, GameState.PLAYING)
 
     def testCheckWinFalse(self) -> None:
-        """Testet, ob Spiel weiterspielt, wenn nicht alle Felder aufgedeckt wurden"""
         self.mockBoard.getCell.return_value.isTrap.return_value = False
         self.mockBoard.getCell.return_value.isScanned.return_value = False
         result: GameState = self.game._checkWin()  # pylint: disable=protected-access
         self.assertEqual(result, GameState.PLAYING)
 
     def testCheckWinTrue(self) -> None:
-        """Testet, ob Spiel gewonnen wird, wenn alle sicheren Felder aufgedeckt sind"""
         def getCellMock(x: int, y: int) -> MagicMock:
             cell: MagicMock = MagicMock()
             cell.isTrap.return_value = (x, y) in self.minePositions
@@ -88,12 +77,10 @@ class TestGame(unittest.TestCase):
         self.assertEqual(result, GameState.WON)
 
     def testEndGameExit(self) -> None:
-        """Testet, ob Spiel sich beendet, wenn Spieler 'n' eingibt"""
         with patch("builtins.input", side_effect=["n"]), self.assertRaises(SystemExit):
             self.game._end()  # pylint: disable=protected-access
 
     def testLoseCondition(self) -> None:
-        """Testet, ob Spiel korrekt endet, wenn eine Mine getroffen wird"""
         with patch.object(self.game, "_handleMove", return_value=GameState.LOST), \
              patch.object(self.game, "_getGameBoard") as mockBoard, \
              patch.object(self.game, "_end") as mockEnd, \
