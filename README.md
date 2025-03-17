@@ -1,391 +1,338 @@
 # Dokumentation
 
-## 1. Grundlegender Aufbau des Spiels
- 
- ### Beschreibung UI
- <table style ="padding-bottom: 100px;">
+## Inhaltsverzeichnis
+1. [Einleitung](#1-einleitung)
+2. [Grundlegender Aufbau des Spiels](#2-grundlegender-aufbau-des-spiels)
+   - [Benutzeroberfläche](#21-benutzeroberfläche)
+   - [Programmablauf](#22-programmablauf)
+3. [Architektur und Klassendesign](#3-architektur-und-klassendesign)
+   - [Klassendiagramm](#31-klassendiagramm)
+   - [Erklärung der Klassen](#32-erklarung-der-klassen)
+4. [Ordnerstruktur](#4-ordnerstruktur)
+5. [Versionen der Bibliotheken](#5-versionen-der-bibliotheken)
+6. [Testergebnisse](#6-testergebnisse)
+
+## 1. Einleitung
+In dieser Dokumentation wird der grundlegende Aufbau des Spiels `Verlassene Raustation` sowie die Architektur detailiert anhand von Diagrammen erklärt. Es wird außerdem die Ordnerstruktur sowie die Ergebnisse von dazu passenden Unittests dokumentiert. Um das Spiel zu starten muss man sich im Hauptordner des Spiels `PYTHON_ABGABE` befinden und in der Konsolen folgenden Befehl eingeben: `PYTHONPATH=$(pwd) python src/main.py`
+
+## 2. Grundlegender Aufbau des Spiels
+
+### 2.1 Benutzeroberfläche
+
+<table style ="padding-bottom: 100px;">
   <tr>
-    <td style="border: none; width: 320px;"><img src="pictures/size.png"></td>
-    <td style="border: none;"> Als erstes soll man  die Größe des Spielfelds eingeben, dabei wird die Eingabe auf ungültige Eingaben überprüft und der Benutzer passend über eine falsche Eingabe informiert. Eine falsche Eingabe ist dann der Fall, wenn der Benutzer keine Zahl eingibt, oder keine Zahl zwischen 5 und 15.</td>
+    <td style="border: none; width: 320px; padding-bottom: 50px;"><img src="pictures/size.png"></td>
+    <td style="border: none; padding-bottom: 50px;"> Als erstes soll man  die Größe des Spielfelds eingeben, dabei wird die Eingabe auf ungültige Eingaben überprüft und der Benutzer passend über eine falsche Eingabe informiert. Eine falsche Eingabe ist dann der Fall, wenn der Benutzer keine Zahl eingibt, oder keine Zahl zwischen 5 und 15.</td>
   </tr>
   <tr>
-    <td style="border: none;"><img src="pictures/gameboard.png" style="width: 1000px;"></td>
-    <td style="border: none;">Hier wird das Spielfeld ausgegeben. Die nicht aufgedeckten Felder sind hierbei ein ■ und über den Feldern wird die Zeilen-/Spaltennummer angezeigt, sodass der Benutzer leichter ein Feld auswählen kann.</td>
+    <td style="border: none; padding-bottom: 50px;"><img src="pictures/gameboard.png" style="width: 1000px;"></td>
+    <td style="border: none; padding-bottom: 50px;">Hier wird das Spielfeld ausgegeben. Die nicht aufgedeckten Felder sind hierbei ein ■ und über den Feldern wird die Zeilen-/Spaltennummer angezeigt, sodass der Benutzer leichter ein Feld auswählen kann.</td>
   </tr>
   <tr>
-    <td style="border: none;"><img src="pictures/choose.png" style="width: 1000px;"></td>
-    <td style="border: none;">Hier soll der Benutzer die Zeilen-/Spaltennummer eingeben, von dem Feld, welches er auswählen möchte. Es wird außerdem wieder auf falsche Eingaben hingewiesen.</td>
+    <td style="border: none; padding-bottom: 50px;"><img src="pictures/choose.png" style="width: 1000px;"></td>
+    <td style="border: none; padding-bottom: 50px;">Hier soll der Benutzer die Zeilen-/Spaltennummer eingeben, von dem Feld, welches er auswählen möchte. Es wird außerdem wieder auf falsche Eingaben hingewiesen.</td>
   </tr>
   <tr>
-    <td style="border: none;"><img src="pictures/gameboard2.png" style="width: 200px;"></td>
-    <td style="border: none;">Hier wird das aktualisierte Spielfeld angezeigt. Die Zahlen stehen für die Anzahl der Fallen, welche das Feld um sich herum hat. Dabei kommt dazu, dass es leere Felder gibt, da sie keine Fallen um sich herum haben und somit eigentlich eine 0 sind.</td>
+    <td style="border: none; padding-bottom: 50px;"><img src="pictures/gameboard2.png" style="width: 200px;"></td>
+    <td style="border: none; padding-bottom: 50px;">Hier wird das aktualisierte Spielfeld angezeigt. Die Zahlen stehen für die Anzahl der Fallen, welche das Feld um sich herum hat. Dabei kommt dazu, dass es leere Felder gibt, da sie keine Fallen um sich herum haben und somit eigentlich eine 0 sind.</td>
   </tr>
   <tr>
-    <td style="border: none;"><img src="pictures/gameboard3.png" style="width: 240px;"></td>
-    <td style="border: none;">Hier wird das Spielfeld angezeigt, wenn man eine Fallen getroffen hat. Dabei werden alle übrigen Fallenfelder angezeigt und der Benutzer darüber informiert, dass er verloren hat.</td>
+    <td style="border: none; padding-bottom: 50px;"><img src="pictures/gameboard3.png" style="width: 240px;"></td>
+    <td style="border: none; padding-bottom: 50px;">Hier wird das Spielfeld angezeigt, wenn man eine Fallen getroffen hat. Dabei werden alle übrigen Fallenfelder angezeigt und der Benutzer darüber informiert, dass er verloren hat.</td>
   </tr>
   <tr>
-    <td style="border: none;"><img src="pictures/gameboard4.png" style="width: 280px;"></td>
-    <td style="border: none;">Hier wird das Spielfeld angezeigt, wenn man alle freien Felder aufgedeckt hat und somit das Spield gewonnen hat.</td>
+    <td style="border: none; padding-bottom: 50px;"><img src="pictures/gameboard4.png" style="width: 280px;"></td>
+    <td style="border: none; padding-bottom: 50px;">Hier wird das Spielfeld angezeigt, wenn man alle freien Felder aufgedeckt hat und somit das Spield gewonnen hat.</td>
   </tr>
   <tr>
-    <td style="border: none;"><img src="pictures/again.png" style="width: 300px;"></td>
+    <td style="border: none; padding-bottom: 50px;"><img src="pictures/again.png" style="width: 300px;"></td>
     <td style="border: none;">Hier wird der finale Schritt gezeigt, bei der gefragt wird ob der Benutzer erneut spielen möchte oder nicht. Fall er möchte und 'y' eingibt, geht das Spiel von vorne los. Falls er 'n' eingibt, wird das Spiel beendet.</td>
   </tr>
  </table>
 
+### 2.2 Programmablauf
+
+<img src= "pictures/PAP.drawio.png" alt="Programmablaufplan">
+
 ---
 
- ## Klassendiagramm
+## 3. Architektur und Klassendesign
+
+### 3.1 Klassendiagramm
 <img src= "pictures/Klassendiagramm.drawio.png" alt="Klassendiagramm">
 
----
+### 3.2 Erklärung der Klassen
 
-## Erklärung der einzelnen Klassen und deren Methoden
-
-### **`main.py` **
+## `main.py`
 
 Hier ist der Einstiegspunkt für das Spiel. Es wird ein `Game`-Objekt erstellt und das Spiel gestartet.
 
 ---
 
-### **Methodenbeschreibung**
+### Methodenbeschreibung
 
-#### **`main() -> None`**
-- **Beschreibung:**  
-  Startet das Spiel, indem ein `Game`-Objekt erstellt und dessen `start()`-Methode aufgerufen wird.
+#### `main() -> None`
+**Beschreibung:**  
+Startet das Spiel, indem ein `Game`-Objekt erstellt und dessen `start()`-Methode aufgerufen wird.
 
-- **Effekt:**  
-  - Erstellt eine Instanz der `Game`-Klasse.  
-  - Ruft die `start()`-Methode auf, um das Spiel zu starten.  
+**Effekt:**  
+- Erstellt eine Instanz der `Game`-Klasse.  
+- Ruft die `start()`-Methode auf, um das Spiel zu starten.  
 
 ---
 
-### **Klasse `Game`**
+## Klasse `Game`
 
 Die Klasse `Game` verwaltet die Spiellogik des Spiels. Sie steuert den Ablauf, verarbeitet Spielzüge und überwacht den Spielstatus.
 
-- **(Klassen-)Attribute:**  
-  - `minSize` (*int*): Minimale Spielfeldgröße (5).
-  - `maxSize` (*int*): Maximale Spielfeldgröße (15).  
+#### Attribute
+- `minSize` (*int*): Minimale Spielfeldgröße (5).
+- `maxSize` (*int*): Maximale Spielfeldgröße (15).  
+
 ---
 
-### **Methodenbeschreibung**
+### Methodenbeschreibung
 
-#### **`__init__(self) -> None`**
+#### `__init__(self) -> None`
 Initialisiert eine neue Instanz des Spiels.
 
-- **Beschreibung:**  
-  Erstellt ein neues Spielobjekt mit Standardwerten.
+**Effekt:**  
+- Setzt `minSize` und `maxSize` für die Spielfeldgröße.  
+- Initialisiert `_gameBoard` auf `None`.  
+- Setzt `_size` auf `0` und `_moves` auf `0`.  
 
-- **Effekt:**  
-  - Setzt `minSize` und `maxSize` für die Spielfeldgröße.  
-  - Initialisiert `_gameBoard` auf `None`.  
-  - Setzt `_size` auf `0` und `_moves` auf `0`.  
-
-- **Attribute:**  
-  - `_gameBoard` (*Board | None*): Referenz auf das Spielfeld (`None`, falls nicht initialisiert).  
-  - `_size` (*int*): Größe des Spielfelds.  
-  - `_moves` (*int*): Anzahl der bereits ausgeführten Züge.  
+**Attribute:**  
+- `_gameBoard` (*Board | None*): Referenz auf das Spielfeld (`None`, falls nicht initialisiert).  
+- `_size` (*int*): Größe des Spielfelds.  
+- `_moves` (*int*): Anzahl der bereits ausgeführten Züge.  
 
 ---
 
-#### **`_getGameBoard(self) -> Board`**
-- **Beschreibung:**  
-  Gibt das aktuelle Spielfeld zurück.
+#### `_getGameBoard(self) -> Board`
+**Beschreibung:**  
+Gibt das aktuelle Spielfeld zurück.
 
-- **Effekt:**  
-  - Falls `_gameBoard` nicht initialisiert ist, wird eine `AssertionError` ausgelöst.  
+**Effekt:**  
+- Falls `_gameBoard` nicht initialisiert ist, wird eine `AssertionError` ausgelöst.  
 
-- **Rückgabewert:**  
-  - `Board` – Gibt das Spielfeld-Objekt zurück.
-
----
-
-#### **`start(self) -> None`**
-- **Beschreibung:**  
-  Startet das Spiel und beginnt die Spielschleife.
-
-- **Effekt:**  
-  - Zeigt eine Willkommensnachricht an.  
-  - Initialisiert das Spielfeld.  
-  - Ruft die Hauptspiel-Schleife (`_gameLoop`) auf.  
+**Rückgabewert:**  
+- `Board` – Gibt das Spielfeld-Objekt zurück.
 
 ---
 
-#### **`_end(self) -> None`**
-- **Beschreibung:**  
-  Beendet das aktuelle Spiel.
+#### `start(self) -> None`
+**Beschreibung:**  
+Startet das Spiel und beginnt die Spielschleife.
 
-- **Effekt:**  
-  - Fragt den Spieler, ob er erneut spielen möchte.  
-  - Startet ein neues Spiel oder beendet das Programm je nach Nutzereingabe.  
-
----
-
-#### **`_initializeGameBoard(self) -> None`**
-- **Beschreibung:**  
-  Erstellt das Spielfeld basierend auf der Nutzereingabe.
-
-- **Effekt:**  
-  - Fragt den Nutzer nach der gewünschten Spielfeldgröße.  
-  - Überprüft die Eingabe auf Gültigkeit.  
-  - Erstellt ein `Board`-Objekt mit der gewählten Größe.  
+**Effekt:**  
+- Zeigt eine Willkommensnachricht an.  
+- Initialisiert das Spielfeld.  
+- Ruft die Hauptspiel-Schleife (`_gameLoop`) auf.  
 
 ---
 
-#### **`_gameLoop(self) -> None`**
-- **Beschreibung:**  
-  Führt die Hauptspiel-Schleife aus.
+#### `_end(self) -> None`
+**Beschreibung:**  
+Beendet das aktuelle Spiel.
 
-- **Effekt:**  
-  - Fragt den Nutzer nach einer Zelle zum Aufdecken.  
-  - Überprüft die Eingabe auf Gültigkeit.  
-  - Führt den Zug mit `_handleMove` aus.  
-  - Überprüft den Spielstatus (gewonnen/verloren).  
-  - Falls das Spiel endet, wird `_end()` aufgerufen.  
+**Effekt:**  
+- Fragt den Spieler, ob er erneut spielen möchte.  
+- Startet ein neues Spiel oder beendet das Programm je nach Nutzereingabe.  
 
 ---
 
-#### **`_handleMove(self, x: int, y: int) -> GameState`**
-- **Beschreibung:**  
-  Führt einen Spielzug an der angegebenen Position aus.
+#### `_initializeGameBoard(self) -> None`
+**Beschreibung:**  
+Erstellt das Spielfeld basierend auf der Nutzereingabe.
 
-- **Effekt:**  
-  - Überprüft, ob die gewählte Zelle bereits aufgedeckt wurde.  
-  - Falls eine Falle getroffen wurde, verliert der Spieler (`GameState.LOST`).  
-  - Falls keine Falle vorhanden ist, wird das Spielfeld aktualisiert.  
-  - Prüft, ob der Spieler gewonnen hat.  
-
-- **Parameter:**  
-  - `x` (*int*): X-Koordinate der gewählten Zelle.  
-  - `y` (*int*): Y-Koordinate der gewählten Zelle.  
-
-- **Rückgabewert:**  
-  - `GameState` – Aktueller Spielstatus (`WON`, `LOST`, `PLAYING`, `REPEAT`).
+**Effekt:**  
+- Fragt den Nutzer nach der gewünschten Spielfeldgröße.  
+- Überprüft die Eingabe auf Gültigkeit.  
+- Erstellt ein `Board`-Objekt mit der gewählten Größe.  
 
 ---
 
-#### **`_checkWin(self) -> GameState`**
-- **Beschreibung:**  
-  Überprüft, ob der Spieler das Spiel gewonnen hat.
+#### `_gameLoop(self) -> None`
+**Beschreibung:**  
+Führt die Hauptspiel-Schleife aus.
 
-- **Effekt:**  
-  - Prüft, ob alle sicheren Zellen aufgedeckt wurden.  
-  - Gibt `GameState.WON` zurück, falls das Spiel gewonnen wurde.  
-  - Gibt `GameState.PLAYING` zurück, falls noch sichere Zellen übrig sind.  
-
-- **Rückgabewert:**  
-  - `GameState` – Entweder `WON` oder `PLAYING`.
+**Effekt:**  
+- Fragt den Nutzer nach einer Zelle zum Aufdecken.  
+- Überprüft die Eingabe auf Gültigkeit.  
+- Führt den Zug mit `_handleMove` aus.  
+- Überprüft den Spielstatus (gewonnen/verloren).  
+- Falls das Spiel endet, wird `_end()` aufgerufen.  
 
 ---
 
-### **Klasse `Board`**
+#### `_handleMove(self, x: int, y: int) -> GameState`
+**Beschreibung:**  
+Führt einen Spielzug an der angegebenen Position aus.
+
+**Effekt:**  
+- Überprüft, ob die gewählte Zelle bereits aufgedeckt wurde.  
+- Falls eine Falle getroffen wurde, verliert der Spieler (`GameState.LOST`).  
+- Falls keine Falle vorhanden ist, wird das Spielfeld aktualisiert.  
+- Prüft, ob der Spieler gewonnen hat.  
+
+**Parameter:**  
+- `x` (*int*): X-Koordinate der gewählten Zelle.  
+- `y` (*int*): Y-Koordinate der gewählten Zelle.  
+
+**Rückgabewert:**  
+- `GameState` – Aktueller Spielstatus (`WON`, `LOST`, `PLAYING`, `REPEAT`).
+
+---
+
+## Klasse `Board`
 
 Die Klasse `Board` repräsentiert das Spielfeld des Spiels. Sie verwaltet die Spielfeldzellen, platziert Fallen und ermöglicht das Aufdecken von Zellen.
 
 ---
 
-### **Methodenbeschreibung**
+### Methodenbeschreibung
 
-#### **`__init__(self, size: int) -> None`**
-Initialisiert ein neues Spielfeld mit der gegebenen Größe.
+#### `__init__(self, size: int) -> None`
+**Beschreibung:**  
+Erstellt ein quadratisches Spielfeld mit der angegebenen Größe.
 
-- **Beschreibung:**  
-  Erstellt ein quadratisches Spielfeld mit der angegebenen Größe.
+**Attribute:**  
+- `_size` (*int*): Die Größe des Spielfelds.  
+- `_grid` (*list[list[Cell]]*): 2D-Liste, die die Spielfeldzellen speichert.  
 
-- **Attribute:**  
-  - `_size` (*int*): Die Größe des Spielfelds.  
-  - `_grid` (*list[list[Cell]]*): 2D-Liste, die die Spielfeldzellen speichert.  
-
-- **Parameter:**  
-  - `size` (*int*): Seitenlänge des Spielfelds.  
+**Parameter:**  
+- `size` (*int*): Seitenlänge des Spielfelds.  
 
 ---
 
-#### **`getCell(self, x: int, y: int) -> Cell`**
-- **Beschreibung:**  
-  Gibt die Zelle an den angegebenen Koordinaten zurück.
+#### `getCell(self, x: int, y: int) -> Cell`
+**Beschreibung:**  
+Gibt die Zelle an den angegebenen Koordinaten zurück.
 
-- **Effekt:**  
-  - Falls die Koordinaten außerhalb des Spielfelds liegen, wird eine `IndexError` ausgelöst.  
-
-- **Parameter:**  
-  - `x` (*int*): X-Koordinate der Zelle.  
-  - `y` (*int*): Y-Koordinate der Zelle.  
-
-- **Rückgabewert:**  
-  - `Cell` – Die Zelle an den gegebenen Koordinaten.  
+**Rückgabewert:**  
+- `Cell` – Die Zelle an den gegebenen Koordinaten.  
 
 ---
 
-#### **`getSize(self) -> int`**
-- **Beschreibung:**  
-  Gibt die Größe des Spielfelds zurück.
+#### `displayBoard(self) -> None`
+**Beschreibung:**  
+Gibt das aktuelle Spielfeld in der Konsole aus.
 
-- **Rückgabewert:**  
-  - `int` – Die Seitenlänge des Spielfelds.  
-
----
-
-#### **`placeTraps(self, dx: int, dy: int) -> None`**
-- **Beschreibung:**  
-  Platziert Fallen zufällig auf dem Spielfeld.
-
-- **Effekt:**  
-  - Stellt sicher, dass die erste aufgedeckte Zelle keine Falle enthält.  
-  - Wählt zufällig Zellen aus und setzt sie als Fallen.  
-  - Aktualisiert die Nachbarzellen mit der Anzahl angrenzender Fallen.  
-
-- **Parameter:**  
-  - `dx` (*int*): X-Koordinate der ersten aufgedeckten Zelle.  
-  - `dy` (*int*): Y-Koordinate der ersten aufgedeckten Zelle.  
+**Effekt:**  
+- Zeigt das Spielfeld mit Zeilen- und Spaltennummern zur besseren Orientierung an.  
 
 ---
 
-#### **`_calculateAdjacentTraps(self) -> None`**
-- **Beschreibung:**  
-  Berechnet für jede Zelle die Anzahl angrenzender Fallen.
-
-- **Effekt:**  
-  - Setzt für jede nicht-Falle die Anzahl benachbarter Fallen.  
-
----
-
-#### **`_countTraps(self, x: int, y: int) -> int`**
-- **Beschreibung:**  
-  Zählt die Anzahl der Fallen in den Nachbarzellen.
-
-- **Effekt:**  
-  - Durchsucht alle benachbarten Zellen und zählt die Fallen.  
-
-- **Parameter:**  
-  - `x` (*int*): X-Koordinate der Zelle.  
-  - `y` (*int*): Y-Koordinate der Zelle.  
-
-- **Rückgabewert:**  
-  - `int` – Anzahl der angrenzenden Fallen.  
-
----
-
-#### **`scanArea(self, x: int, y: int) -> None`**
-- **Beschreibung:**  
-  Deckt leere Felder auf und breitet sich rekursiv aus.
-
-- **Effekt:**  
-  - Falls die Zelle bereits aufgedeckt wurde, passiert nichts.  
-  - Falls die Zelle keine angrenzenden Fallen hat, werden benachbarte Zellen rekursiv aufgedeckt.  
-
-- **Parameter:**  
-  - `x` (*int*): X-Koordinate der zu scannenden Zelle.  
-  - `y` (*int*): Y-Koordinate der zu scannenden Zelle.  
-
----
-
-#### **`displayBoard(self) -> None`**
-- **Beschreibung:**  
-  Gibt das aktuelle Spielfeld in der Konsole aus.
-
-- **Effekt:**  
-  - Zeigt das Spielfeld mit Zeilen- und Spaltennummern zur besseren Orientierung an.  
-  - Aufgedeckte Zellen werden mit ihrer Anzahl angrenzender Fallen angezeigt.  
-  - Fallen werden als `*` dargestellt, wenn sie aufgedeckt wurden.  
-  - Nicht aufgedeckte Zellen werden als `■` angezeigt.  
-  - Falls eine leere Zelle keine angrenzenden Fallen hat, wird sie als Leerzeichen dargestellt.  
-
----
-
-#### **`scanTraps(self) -> None`**
-- **Beschreibung:**  
-  Deckt alle Fallen auf dem Spielfeld auf.
-
-- **Effekt:**  
-  - Markiert alle Fallen als aufgedeckt.  
-  - Aktualisiert die Anzeige des Spielfelds.  
-
----
-
-
-### ** Klasse `Cell`**
+## Klasse `Cell`
 
 Die Klasse `Cell` repräsentiert eine einzelne Zelle im Spielfeld (`gameBoard`). Sie speichert Informationen darüber, ob eine Zelle eine Falle ist, ob sie schon aufgedeckt wurde und wie viele Fallen sich in ihrer direkten Nachbarschaft befinden.
 
-### **Methodenbeschreibung**
+---
 
-#### **`__init__(self, isTrap: bool = False)`**
-Initialisiert eine Zelle. (Konstruktur)
-- **Parameter:**
-  - `isTrap` (*bool*): Gibt an, ob die Zelle eine Falle enthält (Standard: `False`).
-- **Attribute:**
-  - `_isTrap` (*bool*): Speichert, ob die Zelle eine Falle ist.
-  - `_adjacentTraps` (*int*): Speichert die Anzahl der Fallen in den benachbarten Zellen (Standard: `0`).
-  - `_isScanned` (*bool*): Gibt an, ob die Zelle bereits aufgedeckt wurde (Standard: `False`).
+### Methodenbeschreibung
+
+#### `__init__(self, isTrap: bool = False)`
+Initialisiert eine Zelle. (Konstruktor)
+
+**Parameter:**
+- `isTrap` (*bool*): Gibt an, ob die Zelle eine Falle enthält (Standard: `False`).
+
+**Attribute:**
+- `_isTrap` (*bool*): Speichert, ob die Zelle eine Falle ist.
+- `_adjacentTraps` (*int*): Speichert die Anzahl der Fallen in den benachbarten Zellen (Standard: `0`).
+- `_isScanned` (*bool*): Gibt an, ob die Zelle bereits aufgedeckt wurde (Standard: `False`).
 
 ---
 
-#### **`getAdjacentTraps(self) -> int`**
-- **Beschreibung:** Gibt die Anzahl der Fallen zurück, die sich in den direkt benachbarten Zellen befinden.
-- **Rückgabewert:** *int* – Anzahl der benachbarten Fallen.
+#### `scan(self) -> None`
+**Beschreibung:**  
+Markiert die Zelle als aufgedeckt.
+
+**Effekt:**  
+- Setzt `_isScanned` auf `True`, sodass die Zelle nicht erneut aufgedeckt werden kann.
 
 ---
 
-#### **`isScanned(self) -> bool`**
-- **Beschreibung:** Prüft, ob die Zelle bereits aufgedeckt wurde.
-- **Rückgabewert:** *bool* – `True`, wenn die Zelle bereits gescannt wurde, sonst `False`.
+## Klasse `OutOfRangeError`
+
+Die Klasse `OutOfRangeError` ist für den Fehler, dass eine Benutzereingabe außerhalb eines vorgegebenen Wertebereichs ist.
 
 ---
 
-#### **`isTrap(self) -> bool`**
-- **Beschreibung:** Prüft, ob die Zelle eine Falle ist.
-- **Rückgabewert:** *bool* – `True`, wenn die Zelle eine Falle enthält, sonst `False`.
+### Methodenbeschreibung
+
+#### `__init__(self, value: int, minValue: int, maxValue: int) -> None`
+**Parameter:**  
+- `value` (*int*): Der ungültige Wert.  
+- `minValue` (*int*): Die minimale erlaubte Grenze.  
+- `maxValue` (*int*): Die maximale erlaubte Grenze.  
+
+**Attribute:**  
+- `_value` (*int*): Speichert den ungültigen Wert.  
+- `_min` (*int*): Speichert die untere Grenze des gültigen Bereichs.  
+- `_max` (*int*): Speichert die obere Grenze des gültigen Bereichs.  
 
 ---
 
-#### **`setAdjacentTraps(self, value: int) -> None`**
-- **Beschreibung:** Setzt die Anzahl der Fallen in benachbarten Zellen.
-- **Parameter:**
-  - `value` (*int*): Die Anzahl der angrenzenden Fallen.
+#### `__str__(self) -> str`
+**Beschreibung:**  
+Gibt eine formatierte Fehlermeldung zurück, die angibt, dass der Wert außerhalb des gültigen Bereichs liegt.
 
----
-
-#### **`scan(self) -> None`**
-- **Beschreibung:** Markiert die Zelle als aufgedeckt.
-- **Effekt:** Setzt `_isScanned` auf `True`, sodass die Zelle nicht erneut aufgedeckt werden kann.
-
----
-
-## **Klasse `OutOfRangeError`**
-
-Die Klasse
-
----
-
-## **Methodenbeschreibung**
-
-### **`__init__(self, value: int, minValue: int, maxValue: int) -> None`**
-- **Beschreibung:**  
-  Die Klasse `OutOfRangeError` ist für den Fehler, der ausgelöst wird, wenn eine Eingabe außerhalb des erlaubten Wertebereichs liegt.
+**Rückgabewert:**  
+- *str* – Fehlermeldung im Format `"<Wert> is out of the Possible Range (<min>-<max>)"`  
 
 
-- **Parameter:**  
-  - `value` (*int*): Der ungültige Wert.  
-  - `minValue` (*int*): Die minimale erlaubte Grenze.  
-  - `maxValue` (*int*): Die maximale erlaubte Grenze.  
+## 4. Ordnerstruktur
 
-- **Attribute:**  
-  - `_value` (*int*): Speichert den ungültigen Wert.  
-  - `_min` (*int*): Speichert die untere Grenze des gültigen Bereichs.  
-  - `_max` (*int*): Speichert die obere Grenze des gültigen Bereichs.  
+```
+PYTHON_ABGABE
+│── src
+│   ├── cell.py
+│   ├── errors.py
+│   ├── game.py
+│   ├── gameBoard.py
+│   └── main.py
+│── tests
+│   ├── testBoard.py
+│   ├── testCell.py
+│   ├── testErrors.py
+│   ├── testGame.py
+│   └── testMain.py
+│── .pylintrc
+│── mypy.ini
+│── README.md
+└── requirements.txt
+```
 
----
+## 5. Versionen der Bibliotheken
+```ini
+astroid==3.3.8
+coverage==7.6.12
+dill==0.3.9
+isort==6.0.1
+mccabe==0.7.0
+mypy==1.15.0
+mypy-extensions==1.0.0
+platformdirs==4.3.6
+pylint==3.3.4
+tomlkit==0.13.2
+typing_extensions==4.12.2
+```
 
-### **`__str__(self) -> str`**
-- **Beschreibung:**  
-  Gibt eine formatierte Fehlermeldung zurück, die angibt, dass der Wert außerhalb des gültigen Bereichs liegt.
+## 6. Testergebnisse
 
-- **Rückgabewert:**  
-  - *str* – Fehlermeldung im Format `"<Wert> is out of the Possible Range (<min>-<max>)"`  
+### mypy
+<img style="width: 400px;" src="pictures/mypy.png">
 
----
+### pylint
+- **src**
+  <img style="width: 450px;" src="pictures/pylint_src.png">
+- **tests**
+  <img style="width: 450px;" src="pictures/pylint_tests.png">
 
+### unittest
+<img style="width: 400px;" src="pictures/unittests.png">
+
+### coverage
+<img style="width: 400px;" src="pictures/coverage.png">
 
