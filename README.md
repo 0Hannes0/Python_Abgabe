@@ -13,7 +13,7 @@
 6. [Testergebnisse](#6-testergebnisse)
 
 ## 1. Einleitung
-In dieser Dokumentation wird der grundlegende Aufbau des Spiels `Verlassene Raustation` sowie die Architektur detailiert anhand von Diagrammen erklärt. Es wird außerdem die Ordnerstruktur sowie die Ergebnisse von dazu passenden Unittests dokumentiert. Um das Spiel zu starten muss man sich im Hauptordner des Spiels `PYTHON_ABGABE` befinden und in der Konsolen folgenden Befehl eingeben: `PYTHONPATH=$(pwd) python src/main.py`
+In dieser Dokumentation wird der grundlegende Aufbau des Spiels `Verlassene Raumstation` sowie die Architektur detailiert anhand von Diagrammen erklärt. Es wird außerdem die Ordnerstruktur sowie die Ergebnisse von dazu passenden Unittests dokumentiert. Um das Spiel zu starten muss man sich im Hauptordner des Spiels `PYTHON_ABGABE` befinden und in der Konsolen folgenden Befehl eingeben: `PYTHONPATH=$(pwd) python src/main.py`
 
 ## 2. Grundlegender Aufbau des Spiels
 
@@ -418,7 +418,7 @@ PYTHON_ABGABE
 │   ├── cell.py
 │   ├── errors.py
 │   ├── game.py
-│   ├── gameBoard.py
+│   ├── board.py
 │   └── main.py
 │── tests
 │   ├── testBoard.py

@@ -1,6 +1,6 @@
 [FORMAT]
 
-# 1. Funktionsnamen und Methoden sollen CamelCase sein
+# 1. Methodennamen sollen CamelCase sein
 method-naming-style=camelCase
 
 # 2. Argumentnamen sollen CamelCase sein
@@ -9,12 +9,10 @@ argument-naming-style=camelCase
 # 3. Variablennamen sollen CamelCase sein
 variable-naming-style=camelCase
 
-# 4. Attributnamen (z. B. self.foo) sollen CamelCase sein
+# 4. Attributnamen sollen CamelCase sein
 attr-naming-style=camelCase
 
-# 5. Klassennamen sollen CamelCase sein
+# 5. Klassennamen sollen PascalCase sein
 class-naming-style=PascalCase
-
-# 6. Modulnamen sollen auch CamelCase sein (optional)
 
 

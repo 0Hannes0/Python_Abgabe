@@ -2,7 +2,7 @@
 
 import unittest
 from unittest.mock import patch
-from src.gameBoard import Board
+from src.board import Board
 from src.cell import Cell
 
 class TestBoard(unittest.TestCase):

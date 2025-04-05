@@ -2,7 +2,7 @@
 
 from enum import Enum
 import sys
-from src.gameBoard import Board
+from src.board import Board
 import src.errors
 
 # pylint: disable=too-few-public-methods
