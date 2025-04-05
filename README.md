@@ -7,13 +7,13 @@
    - [Programmablauf](#22-programmablauf)
 3. [Architektur und Klassendesign](#3-architektur-und-klassendesign)
    - [Klassendiagramm](#31-klassendiagramm)
-   - [Erklärung der Klassen](#32-erklarung-der-klassen)
+   - [Erklärung der Klassen](#32-erklärung-der-klassen)
 4. [Ordnerstruktur](#4-ordnerstruktur)
 5. [Versionen der Bibliotheken](#5-versionen-der-bibliotheken)
 6. [Testergebnisse](#6-testergebnisse)
 
 ## 1. Einleitung
-In dieser Dokumentation wird der grundlegende Aufbau des Spiels `Verlassene Raustation` sowie die Architektur detailiert anhand von Diagrammen erklärt. Es wird außerdem die Ordnerstruktur sowie die Ergebnisse von dazu passenden Unittests dokumentiert. Um das Spiel zu starten muss man sich im Hauptordner des Spiels `PYTHON_ABGABE` befinden und in der Konsolen folgenden Befehl eingeben: `PYTHONPATH=$(pwd) python src/main.py`
+In dieser Dokumentation wird der grundlegende Aufbau des Spiels `Verlassene Raumstation` sowie die Architektur detailiert anhand von Diagrammen erklärt. Es wird außerdem die Ordnerstruktur sowie die Ergebnisse von dazu passenden Unittests dokumentiert. Um das Spiel zu starten muss man sich im Hauptordner des Spiels `PYTHON_ABGABE` befinden und in der Konsolen folgenden Befehl eingeben: `PYTHONPATH=$(pwd) python src/main.py`
 
 ## 2. Grundlegender Aufbau des Spiels
 
@@ -80,6 +80,7 @@ Startet das Spiel, indem ein `Game`-Objekt erstellt und dessen `start()`-Methode
 - Ruft die `start()`-Methode auf, um das Spiel zu starten.  
 
 ---
+<br>
 
 ## Klasse `Game`
 
@@ -94,6 +95,7 @@ Die Klasse `Game` verwaltet die Spiellogik des Spiels. Sie steuert den Ablauf, v
 ### Methodenbeschreibung
 
 #### `__init__(self) -> None`
+**Beschreibung:**  
 Initialisiert eine neue Instanz des Spiels.
 
 **Effekt:**  
@@ -182,7 +184,21 @@ Führt einen Spielzug an der angegebenen Position aus.
 **Rückgabewert:**  
 - `GameState` – Aktueller Spielstatus (`WON`, `LOST`, `PLAYING`, `REPEAT`).
 
+
+#### `_checkWin(self) -> GameState`
+**Beschreibung:**  
+Prüft ob der Spieler gewonnen hat.
+
+**Effekt:**  
+- Überprüft, ob die gewählte Zelle noch nicht aufgedeckt wurde und auch keine Falle ist.
+- Falls eine Zelle noch nicht aufgedeckt wurde, geht das Spiel weiter (`GameState.PLAYING`).
+- Falls alle Zellen schon aufgedeckt sind und keine davon eine Falle ist, gewinnt der Spieler (`GameState.WON`).
+
+**Rückgabewert:**  
+- `GameState` – Aktueller Spielstatus (`WON`, `LOST`, `PLAYING`, `REPEAT`).
+
 ---
+<br>
 
 ## Klasse `Board`
 
@@ -201,7 +217,7 @@ Erstellt ein quadratisches Spielfeld mit der angegebenen Größe.
 - `_grid` (*list[list[Cell]]*): 2D-Liste, die die Spielfeldzellen speichert.  
 
 **Parameter:**  
-- `size` (*int*): Seitenlänge des Spielfelds.  
+- `size` (*int*): Größe des Spielfelds.  
 
 ---
 
@@ -214,6 +230,65 @@ Gibt die Zelle an den angegebenen Koordinaten zurück.
 
 ---
 
+#### `getSize(self) -> int`
+**Beschreibung:**  
+Gibt die Größe des Spielfelds zurück.
+
+**Rückgabewert:**  
+- `int` – Die Größe des 2D Spielfelds.  
+
+---
+
+#### `placeTraps(self, dx: int, dy: int) -> None`
+**Beschreibung:**  
+Platziert eine bestimmte Anzahl zufällig verteilter Fallen auf dem Spielfeld, wobei die Startposition `(dx, dy)` ausgelassen wird.
+
+**Effekt:**  
+- Vermeidet, dass an der Startposition eine Falle platziert wird.  
+- Ruft anschließend die Berechnung benachbarter Fallen für alle Zellen auf.
+
+**Parameter:**  
+- `dx` (*int*): X-Koordinate der Startzelle.  
+- `dy` (*int*): Y-Koordinate der Startzelle.  
+
+---
+
+#### `_calculateAdjacentTraps(self) -> None`
+**Beschreibung:**  
+Berechnet für jede Zelle die Anzahl der benachbarten Fallen und speichert diese Information.
+
+**Effekt:**  
+- Setzt für jede nicht mit einer Falle belegte Zelle die Anzahl benachbarter Fallen.  
+
+---
+
+#### `_countTraps(self, x: int, y: int) -> int`
+**Beschreibung:**  
+Zählt die Anzahl der Fallen in den benachbarten Zellen der Position `(x, y)`.
+
+**Rückgabewert:**  
+- `int` – Anzahl der angrenzenden Fallen.  
+
+**Parameter:**  
+- `x` (*int*): X-Koordinate der Zelle.  
+- `y` (*int*): Y-Koordinate der Zelle.  
+
+---
+
+#### `scanArea(self, x: int, y: int) -> None`
+**Beschreibung:**  
+Deckt die Zelle an der Position `(x, y)` auf. Falls dort keine benachbarten Fallen sind, werden angrenzende Zellen ebenfalls aufgedeckt.
+
+**Effekt:**  
+- Deckt in einem 3x3 Feld um die Zelle herum die Felder auf.
+- Falls ein Feld dabei keine Fallen um sich hat, wird `scanArea(x, y)` auch für dieses Feld aufgerufen.
+
+**Parameter:**  
+- `x` (*int*): X-Koordinate der zu scannenden Zelle.  
+- `y` (*int*): Y-Koordinate der zu scannenden Zelle.  
+
+---
+
 #### `displayBoard(self) -> None`
 **Beschreibung:**  
 Gibt das aktuelle Spielfeld in der Konsole aus.
@@ -222,6 +297,17 @@ Gibt das aktuelle Spielfeld in der Konsole aus.
 - Zeigt das Spielfeld mit Zeilen- und Spaltennummern zur besseren Orientierung an.  
 
 ---
+
+#### `scanTraps(self) -> None`
+**Beschreibung:**  
+Deckt alle Fallen auf dem Spielfeld auf und zeigt das vollständige Spielfeld an.
+
+**Effekt:**  
+- Markiert alle Fallen als aufgedeckt.  
+- Gibt das aktualisierte Spielfeld aus.
+
+---
+<br>
 
 ## Klasse `Cell`
 
@@ -232,7 +318,8 @@ Die Klasse `Cell` repräsentiert eine einzelne Zelle im Spielfeld (`gameBoard`).
 ### Methodenbeschreibung
 
 #### `__init__(self, isTrap: bool = False)`
-Initialisiert eine Zelle. (Konstruktor)
+**Beschreibung:**  
+Initialisiert eine Zelle.
 
 **Parameter:**
 - `isTrap` (*bool*): Gibt an, ob die Zelle eine Falle enthält (Standard: `False`).
@@ -244,14 +331,51 @@ Initialisiert eine Zelle. (Konstruktor)
 
 ---
 
+#### `getAdjacentTraps(self) -> int`
+**Beschreibung:**  
+Gibt die Anzahl der benachbarten Fallen der Zelle zurück.
+
+**Rückgabewert:**  
+- `int` – Anzahl angrenzender Fallen.  
+
+---
+
+#### `isScanned(self) -> bool`
+**Beschreibung:**  
+Gibt zurück, ob die Zelle bereits aufgedeckt wurde.
+
+**Rückgabewert:**  
+- `bool` – `True`, wenn die Zelle aufgedeckt wurde, sonst `False`.  
+
+---
+
+#### `isTrap(self) -> bool`
+**Beschreibung:**  
+Gibt zurück, ob sich in der Zelle eine Falle befindet.
+
+**Rückgabewert:**  
+- `bool` – `True`, wenn die Zelle eine Falle ist, sonst `False`.  
+
+---
+
+#### `setAdjacentTraps(self, value: int) -> None`
+**Beschreibung:**  
+Setzt die Anzahl benachbarter Fallen für diese Zelle.
+
+**Parameter:**  
+- `value` (*int*): Die Anzahl angrenzender Fallen.  
+
+---
+
 #### `scan(self) -> None`
 **Beschreibung:**  
 Markiert die Zelle als aufgedeckt.
 
 **Effekt:**  
-- Setzt `_isScanned` auf `True`, sodass die Zelle nicht erneut aufgedeckt werden kann.
+- Setzt `_isScanned` auf `True`, sodass die Zelle nicht erneut aufgedeckt wird.
 
 ---
+<br>
 
 ## Klasse `OutOfRangeError`
 
@@ -262,6 +386,9 @@ Die Klasse `OutOfRangeError` ist für den Fehler, dass eine Benutzereingabe auß
 ### Methodenbeschreibung
 
 #### `__init__(self, value: int, minValue: int, maxValue: int) -> None`
+**Beschreibung:**  
+Fehler für zu hohe oder zu niedrige Eingaben.
+
 **Parameter:**  
 - `value` (*int*): Der ungültige Wert.  
 - `minValue` (*int*): Die minimale erlaubte Grenze.  
@@ -281,6 +408,7 @@ Gibt eine formatierte Fehlermeldung zurück, die angibt, dass der Wert außerhal
 **Rückgabewert:**  
 - *str* – Fehlermeldung im Format `"<Wert> is out of the Possible Range (<min>-<max>)"`  
 
+<br>
 
 ## 4. Ordnerstruktur
 
@@ -290,7 +418,7 @@ PYTHON_ABGABE
 │   ├── cell.py
 │   ├── errors.py
 │   ├── game.py
-│   ├── gameBoard.py
+│   ├── board.py
 │   └── main.py
 │── tests
 │   ├── testBoard.py
@@ -303,6 +431,8 @@ PYTHON_ABGABE
 │── README.md
 └── requirements.txt
 ```
+
+<br>
 
 ## 5. Versionen der Bibliotheken
 ```ini
@@ -319,6 +449,8 @@ tomlkit==0.13.2
 typing_extensions==4.12.2
 ```
 
+<br>
+
 ## 6. Testergebnisse
 
 ### mypy
@@ -327,8 +459,10 @@ typing_extensions==4.12.2
 ### pylint
 - **src**
   <img style="width: 450px;" src="pictures/pylint_src.png">
+  - Bei `game.py` `pylint: disable=too-few-public-methods` bei der `GameState(Enum)`, da eine Enumeration keine Klassen besitzt.
 - **tests**
   <img style="width: 450px;" src="pictures/pylint_tests.png">
+    - Bei `testGame.py` `pylint: disable=protected-access` für alle privaten Attribute/ Methoden, welche von `game.py`verwendet werden, da diese eigentlich geschützt sind und nicht zugänglich für andere sein sollte.
 
 ### unittest
 <img style="width: 400px;" src="pictures/unittests.png">
