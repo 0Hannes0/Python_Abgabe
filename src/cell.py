@@ -2,7 +2,6 @@
 
 class Cell:
     """Eine Zelle im gameBoard"""
-
     def __init__(self, isTrap: bool = False):
         self._isTrap: bool = isTrap
         self._adjacentTraps: int = 0
