@@ -17,5 +17,3 @@ This repository is for the game `"Verlassene Raumstation"`
   <p><strong>Hannes Klas TIK24</strong></p>
 </div>
 
-
-
